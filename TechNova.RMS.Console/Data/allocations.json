@@ -1,0 +1,82 @@
+[
+  {
+    "Id": "ALLOC001",
+    "EmployeeId": "EMP001",
+    "ProjectId": "PROJ001",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC002",
+    "EmployeeId": "EMP003",
+    "ProjectId": "PROJ001",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC003",
+    "EmployeeId": "EMP005",
+    "ProjectId": "PROJ002",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC006",
+    "EmployeeId": "EMP011",
+    "ProjectId": "PROJ003",
+    "StartDate": "2026-11-15",
+    "EndDate": "2027-02-28",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC007",
+    "EmployeeId": "EMP009",
+    "ProjectId": "PROJ004",
+    "StartDate": "2026-12-01",
+    "EndDate": "2027-02-28",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC008",
+    "EmployeeId": "EMP004",
+    "ProjectId": "PROJ004",
+    "StartDate": "2026-12-01",
+    "EndDate": "2027-02-28",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC009",
+    "EmployeeId": "EMP008",
+    "ProjectId": "PROJ005",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC010",
+    "EmployeeId": "EMP014",
+    "ProjectId": "PROJ005",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC20261018214353046",
+    "EmployeeId": "EMP002",
+    "ProjectId": "PROJ001",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  },
+  {
+    "Id": "ALLOC20261018214448651",
+    "EmployeeId": "EMP010",
+    "ProjectId": "PROJ002",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "AllocationPercentage": 50
+  }
+]

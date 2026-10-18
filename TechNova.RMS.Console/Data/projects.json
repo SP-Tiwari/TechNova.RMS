@@ -1,0 +1,101 @@
+[
+  {
+    "Id": "PROJ001",
+    "Name": "Digital Banking Platform",
+    "ClientName": "ABC Bank",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "Status": "Active",
+    "RequiredSkills": [
+      {
+        "SkillName": "C#",
+        "MinimumProficiencyLevel": 4
+      },
+      {
+        "SkillName": "SQL",
+        "MinimumProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "PROJ002",
+    "Name": "Cloud Migration",
+    "ClientName": "Northstar Ltd",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "Status": "Active",
+    "RequiredSkills": [
+      {
+        "SkillName": "Azure",
+        "MinimumProficiencyLevel": 4
+      },
+      {
+        "SkillName": "Docker",
+        "MinimumProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "PROJ003",
+    "Name": "Retail Analytics",
+    "ClientName": "XYZ Retail",
+    "StartDate": "2026-11-15",
+    "EndDate": "2027-02-28",
+    "Status": "Planned",
+    "RequiredSkills": [
+      {
+        "SkillName": "Python",
+        "MinimumProficiencyLevel": 4
+      },
+      {
+        "SkillName": "SQL",
+        "MinimumProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "PROJ004",
+    "Name": "Customer Portal",
+    "ClientName": "Bright Retail",
+    "StartDate": "2026-12-01",
+    "EndDate": "2027-02-28",
+    "Status": "Planned",
+    "RequiredSkills": [
+      {
+        "SkillName": "JavaScript",
+        "MinimumProficiencyLevel": 4
+      },
+      {
+        "SkillName": "HTML",
+        "MinimumProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "PROJ005",
+    "Name": "Quality Automation",
+    "ClientName": "Vertex Systems",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-01-31",
+    "Status": "Active",
+    "RequiredSkills": [
+      {
+        "SkillName": "Testing",
+        "MinimumProficiencyLevel": 4
+      },
+      {
+        "SkillName": "C#",
+        "MinimumProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "PROJ006",
+    "Name": "Cloud Migration Platform",
+    "ClientName": "Global Finance Ltd",
+    "StartDate": "2026-11-01",
+    "EndDate": "2027-04-30",
+    "Status": "Planned",
+    "RequiredSkills": []
+  }
+]

@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TechNova.RMS.Application\TechNova.RMS.Application.csproj" />
+    <ProjectReference Include="..\TechNova.RMS.Domain\TechNova.RMS.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

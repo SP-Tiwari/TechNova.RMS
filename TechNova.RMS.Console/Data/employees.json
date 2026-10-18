@@ -1,0 +1,335 @@
+[
+  {
+    "Id": "EMP001",
+    "FullName": "Anita Sharma",
+    "Email": "anita.sharma@technova.com",
+    "Designation": "Software Engineer",
+    "Department": "Engineering",
+    "CostRate": 4500,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "C#",
+        "ProficiencyLevel": 4
+      },
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP002",
+    "FullName": "Rahul Verma",
+    "Email": "rahul.verma@technova.com",
+    "Designation": "Senior Developer",
+    "Department": "Engineering",
+    "CostRate": 6000,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "C#",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "Azure",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP003",
+    "FullName": "Neha Gupta",
+    "Email": "neha.gupta@technova.com",
+    "Designation": "Software Engineer",
+    "Department": "Engineering",
+    "CostRate": 4800,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "C#",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP004",
+    "FullName": "Vikram Singh",
+    "Email": "vikram.singh@technova.com",
+    "Designation": "Junior Developer",
+    "Department": "Engineering",
+    "CostRate": 3200,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "C#",
+        "ProficiencyLevel": 3
+      },
+      {
+        "SkillName": "Java",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP005",
+    "FullName": "Priya Patel",
+    "Email": "priya.patel@technova.com",
+    "Designation": "Cloud Engineer",
+    "Department": "Engineering",
+    "CostRate": 5500,
+    "IsActive": true,
+    "EmploymentType": "Contract",
+    "Skills": [
+      {
+        "SkillName": "Azure",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "Docker",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP006",
+    "FullName": "Arjun Mehta",
+    "Email": "arjun.mehta@technova.com",
+    "Designation": "Database Developer",
+    "Department": "Engineering",
+    "CostRate": 5000,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "Python",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP007",
+    "FullName": "Kavya Nair",
+    "Email": "kavya.nair@technova.com",
+    "Designation": "Business Analyst",
+    "Department": "Consulting",
+    "CostRate": 4200,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "Business Analysis",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP008",
+    "FullName": "Rohan Das",
+    "Email": "rohan.das@technova.com",
+    "Designation": "QA Engineer",
+    "Department": "Quality Assurance",
+    "CostRate": 3800,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "Testing",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "C#",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP009",
+    "FullName": "Meera Iyer",
+    "Email": "meera.iyer@technova.com",
+    "Designation": "UI Developer",
+    "Department": "Engineering",
+    "CostRate": 4600,
+    "IsActive": true,
+    "EmploymentType": "Contract",
+    "Skills": [
+      {
+        "SkillName": "JavaScript",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "HTML",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP010",
+    "FullName": "Aditya Rao",
+    "Email": "aditya.rao@technova.com",
+    "Designation": "DevOps Engineer",
+    "Department": "Infrastructure",
+    "CostRate": 5700,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "Docker",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "Azure",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP011",
+    "FullName": "Pooja Shah",
+    "Email": "pooja.shah@technova.com",
+    "Designation": "Python Developer",
+    "Department": "Engineering",
+    "CostRate": 4900,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "Python",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP012",
+    "FullName": "Karan Malhotra",
+    "Email": "karan.malhotra@technova.com",
+    "Designation": "Java Developer",
+    "Department": "Engineering",
+    "CostRate": 4700,
+    "IsActive": false,
+    "EmploymentType": "PartTime",
+    "Skills": [
+      {
+        "SkillName": "Java",
+        "ProficiencyLevel": 5
+      },
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP013",
+    "FullName": "Sneha Kulkarni",
+    "Email": "sneha.kulkarni@technova.com",
+    "Designation": "Project Coordinator",
+    "Department": "Consulting",
+    "CostRate": 4000,
+    "IsActive": false,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "Project Management",
+        "ProficiencyLevel": 4
+      },
+      {
+        "SkillName": "Business Analysis",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP014",
+    "FullName": "Dev Joshi",
+    "Email": "dev.joshi@technova.com",
+    "Designation": "Support Engineer",
+    "Department": "Support",
+    "CostRate": 3500,
+    "IsActive": true,
+    "EmploymentType": "Intern",
+    "Skills": [
+      {
+        "SkillName": "SQL",
+        "ProficiencyLevel": 2
+      },
+      {
+        "SkillName": "Testing",
+        "ProficiencyLevel": 3
+      }
+    ]
+  },
+  {
+    "Id": "EMP015",
+    "FullName": "Ishita Roy",
+    "Email": "ishita.roy@technova.com",
+    "Designation": "Cloud Developer",
+    "Department": "Infrastructure",
+    "CostRate": 5300,
+    "IsActive": false,
+    "EmploymentType": "Permanent",
+    "Skills": [
+      {
+        "SkillName": "Azure",
+        "ProficiencyLevel": 4
+      },
+      {
+        "SkillName": "C#",
+        "ProficiencyLevel": 4
+      }
+    ]
+  },
+  {
+    "Id": "EMP016",
+    "FullName": "Prakash Tiwari",
+    "Email": "Sprakash@technova.com",
+    "Designation": "Senior Developer",
+    "Department": "IT",
+    "CostRate": 5800,
+    "IsActive": false,
+    "EmploymentType": "Permanent",
+    "Skills": []
+  },
+  {
+    "Id": "EMP017",
+    "FullName": "Matre Satya",
+    "Email": "matresatya@technova.com",
+    "Designation": "Senior Tester",
+    "Department": "IT",
+    "CostRate": 4800,
+    "IsActive": true,
+    "EmploymentType": "Permanent",
+    "Skills": []
+  },
+  {
+    "Id": "EMP018",
+    "FullName": "Narendra Tomer",
+    "Email": "Guptanare@technova.com",
+    "Designation": "Software Engineer",
+    "Department": "IT",
+    "CostRate": 5200,
+    "IsActive": true,
+    "EmploymentType": "Contract",
+    "Skills": []
+  }
+]

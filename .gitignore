@@ -1,0 +1,15 @@
+@'
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# .NET build output
+**/bin/
+**/obj/
+
+# Temporary files
+*.log
+.DS_Store
+Thumbs.db
+'@ | Set-Content .gitignore
