@@ -3,4 +3,5 @@
   <Project Path="TechNova.RMS.Console/TechNova.RMS.Console.csproj" />
   <Project Path="TechNova.RMS.Domain/TechNova.RMS.Domain.csproj" />
   <Project Path="TechNova.RMS.Infrastructure/TechNova.RMS.Infrastructure.csproj" />
+  <Project Path="TechNova.RMS.Tests/TechNova.RMS.Tests.csproj" />
 </Solution>
