@@ -1,9 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using TechNova.RMS.Application.Persistence;
-using TechNova.RMS.Application.Services;
-using TechNova.RMS.ConsoleApp.UI;
-using TechNova.RMS.Domain.Services;
-using TechNova.RMS.Infrastructure.Persistence;
+﻿using TechNova.RMS.ConsoleApp.UI;
 
 var services = new ServiceCollection();
 

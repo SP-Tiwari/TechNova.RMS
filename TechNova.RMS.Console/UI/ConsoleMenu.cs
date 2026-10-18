@@ -1,9 +1,4 @@
-﻿using TechNova.RMS.Application.Persistence;
-using TechNova.RMS.Application.Services;
-using TechNova.RMS.Domain.Employees;
-using TechNova.RMS.Domain.Projects;
-
-namespace TechNova.RMS.ConsoleApp.UI;
+﻿namespace TechNova.RMS.ConsoleApp.UI;
 
 public class ConsoleMenu
 {
@@ -113,7 +108,7 @@ public class ConsoleMenu
 					}
 
 					var matchingEmployees = _matchingService.FindMatchingEmployees(
-			  selectedProject, _repository.GetEmployees(),			_repository.GetAllocations());
+			  selectedProject, _repository.GetEmployees(), _repository.GetAllocations());
 
 					Console.WriteLine();
 					Console.WriteLine($"Matching employees for: {selectedProject.Name}");

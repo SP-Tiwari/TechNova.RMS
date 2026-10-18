@@ -1,8 +1,4 @@
-﻿using TechNova.RMS.Domain.Allocations;
-using TechNova.RMS.Domain.Employees;
-using TechNova.RMS.Domain.Projects;
-
-namespace TechNova.RMS.Domain.Services;
+﻿namespace TechNova.RMS.Domain.Services;
 
 public sealed class AllocationService
 {

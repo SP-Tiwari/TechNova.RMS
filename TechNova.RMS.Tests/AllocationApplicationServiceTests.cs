@@ -1,13 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TechNova.RMS.Application.Services;
-using TechNova.RMS.Domain.Allocations;
-using TechNova.RMS.Domain.Employees;
-using TechNova.RMS.Domain.Projects;
-using TechNova.RMS.Domain.Services;
-using Xunit;
-
 namespace TechNova.RMS.Tests;
 
 public class AllocationApplicationServiceTests
@@ -17,7 +7,7 @@ public class AllocationApplicationServiceTests
 	{
 		var repo = new InMemoryRmsRepository();
 		var emp = new Employee("A1", "Alloc", "a@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
-		var proj = new Project("PR1", "P", "C", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var proj = new Project("PR1", "P", "C", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 
 		repo.SeedEmployees(new[] { emp });
 		repo.SeedProjects(new[] { proj });
@@ -38,7 +28,7 @@ public class AllocationApplicationServiceTests
 	public void Allocate_MissingEmployee_ThrowsInvalidOperationException()
 	{
 		var repo = new InMemoryRmsRepository();
-		var proj = new Project("PR2", "P", "C", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var proj = new Project("PR2", "P", "C", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		repo.SeedProjects(new[] { proj });
 
 		var allocationService = new AllocationService();
@@ -59,7 +49,7 @@ public class AllocationApplicationServiceTests
 		var allocationService = new AllocationService();
 		var app = new AllocationApplicationService(repo, allocationService);
 
-		var alloc = new Allocation("AL-C", emp.Id, "NoProj", new DateOnly(2026,11,1), new DateOnly(2026,11,30), 50m);
+		var alloc = new Allocation("AL-C", emp.Id, "NoProj", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30), 50m);
 
 		Assert.Throws<InvalidOperationException>(() => app.Allocate(alloc));
 	}
@@ -69,7 +59,7 @@ public class AllocationApplicationServiceTests
 	{
 		var repo = new InMemoryRmsRepository();
 		var emp = new Employee("A3", "Alloc", "a@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
-		var proj = new Project("PR3", "P", "C", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var proj = new Project("PR3", "P", "C", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 
 		var allocation = new Allocation("REL1", emp.Id, proj.Id, proj.StartDate, proj.EndDate, 50m);
 

@@ -1,8 +1,4 @@
-﻿
-using TechNova.RMS.Application.Persistence;
-using TechNova.RMS.Domain.Projects;
-
-namespace TechNova.RMS.Application.Services;
+﻿namespace TechNova.RMS.Application.Services;
 
 public sealed class ProjectManagementService(IRmsRepository repository)
 {

@@ -1,0 +1,10 @@
+global using System;
+global using System.Collections.Generic;
+global using System.IO;
+global using System.Linq;
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
+global using TechNova.RMS.Application.Persistence;
+global using TechNova.RMS.Domain.Allocations;
+global using TechNova.RMS.Domain.Employees;
+global using TechNova.RMS.Domain.Projects;

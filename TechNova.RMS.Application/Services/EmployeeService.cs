@@ -1,7 +1,4 @@
-﻿
-using TechNova.RMS.Application.Persistence;
-
-namespace TechNova.RMS.Application.Services;
+﻿namespace TechNova.RMS.Application.Services;
 
 public class EmployeeService(IRmsRepository repository)
 {

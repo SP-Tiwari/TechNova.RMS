@@ -1,12 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TechNova.RMS.Application.Services;
-using TechNova.RMS.Domain.Allocations;
-using TechNova.RMS.Domain.Employees;
-using TechNova.RMS.Domain.Projects;
-using Xunit;
-
 namespace TechNova.RMS.Tests;
 
 public class MatchingTests
@@ -16,7 +7,7 @@ public class MatchingTests
 	[Fact]
 	public void FindMatchingEmployees_MatchesBySkillAndAvailability()
 	{
-		var project = new Project("PJ", "Name", "Client", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var project = new Project("PJ", "Name", "Client", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		project.AddRequiredSkill("C#", 4);
 
 		var good = new Employee("M1", "Good", "g@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
@@ -46,7 +37,7 @@ public class MatchingTests
 	[Fact]
 	public void FindMatchingEmployees_ExactSkillLevel_Matches()
 	{
-		var project = new Project("PJ2", "Name", "Client", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var project = new Project("PJ2", "Name", "Client", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		project.AddRequiredSkill("SQL", 4);
 
 		var emp = new Employee("MS1", "Exact", "e@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
@@ -60,7 +51,7 @@ public class MatchingTests
 	[Fact]
 	public void FindMatchingEmployees_InactiveEmployee_Excluded()
 	{
-		var project = new Project("PJ3", "Name", "Client", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var project = new Project("PJ3", "Name", "Client", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		project.AddRequiredSkill("C#", 3);
 
 		var emp = new Employee("MS2", "Inactive", "i@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
@@ -75,7 +66,7 @@ public class MatchingTests
 	[Fact]
 	public void FindMatchingEmployees_MissingOneRequiredSkill_Excluded()
 	{
-		var project = new Project("PJ4", "Name", "Client", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var project = new Project("PJ4", "Name", "Client", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		project.AddRequiredSkill("C#", 3);
 		project.AddRequiredSkill("SQL", 3);
 
@@ -91,7 +82,7 @@ public class MatchingTests
 	[Fact]
 	public void FindMatchingEmployees_NoAvailability_Excluded()
 	{
-		var project = new Project("PJ5", "Name", "Client", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var project = new Project("PJ5", "Name", "Client", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		project.AddRequiredSkill("C#", 3);
 
 		var emp = new Employee("MS4", "BusyAll", "b@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
@@ -110,7 +101,7 @@ public class MatchingTests
 	[Fact]
 	public void FindMatchingEmployees_EmptyEmployeeList_ReturnsNoMatches()
 	{
-		var project = new Project("PJ6", "Name", "Client", new DateOnly(2026,11,1), new DateOnly(2026,11,30));
+		var project = new Project("PJ6", "Name", "Client", new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30));
 		project.AddRequiredSkill("C#", 1);
 
 		var matches = _matching.FindMatchingEmployees(project, Array.Empty<Employee>(), Enumerable.Empty<Allocation>());

@@ -1,8 +1,4 @@
 ﻿
-using TechNova.RMS.Domain.Allocations;
-using TechNova.RMS.Domain.Employees;
-using TechNova.RMS.Domain.Projects;
-
 namespace TechNova.RMS.Application.Persistence;
 
 public interface IRmsRepository
