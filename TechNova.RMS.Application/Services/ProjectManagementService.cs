@@ -2,6 +2,10 @@
 
 public sealed class ProjectManagementService(IRmsRepository repository)
 {
+	/// <summary>
+	/// Adds a new project after checking for duplicate project IDs and persists it.
+	/// </summary>
+	/// <param name="project">Project to add.</param>
 	public void AddProject(Project project)
 	{
 		var projects = repository.GetProjects();

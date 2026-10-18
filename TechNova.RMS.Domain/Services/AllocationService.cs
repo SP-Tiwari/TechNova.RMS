@@ -2,6 +2,16 @@
 
 public sealed class AllocationService
 {
+	/// <summary>
+	/// Validates an allocation against business rules.
+	/// Checks that the employee is active, that allocation IDs match the supplied employee and project,
+	/// that allocation dates fall within the project dates, and that the per-day allocation totals do not exceed 100%.
+	/// </summary>
+	/// <param name="employee">The employee to allocate.</param>
+	/// <param name="project">The project being allocated to.</param>
+	/// <param name="newAllocation">The allocation to validate.</param>
+	/// <param name="existingAllocations">Existing allocations to consider when checking overlaps.</param>
+	/// <exception cref="InvalidOperationException">Thrown when a business rule is violated.</exception>
 	public void ValidateAllocation(
 		Employee employee,
 		Project project,

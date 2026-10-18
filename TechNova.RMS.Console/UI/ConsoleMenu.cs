@@ -31,6 +31,10 @@ public class ConsoleMenu
 	bool exit = false;
 	public void Run()
 	{
+		/// <summary>
+		/// Main interactive menu loop for the console application. Presents options and routes user commands
+		/// to application services. Blocking call until the user selects Exit.
+		/// </summary>
 		while (!exit)
 		{
 			global::System.Console.WriteLine();

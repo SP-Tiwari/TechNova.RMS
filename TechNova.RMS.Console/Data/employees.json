@@ -331,5 +331,16 @@
     "IsActive": true,
     "EmploymentType": "Contract",
     "Skills": []
+  },
+  {
+    "Id": "EMP019",
+    "FullName": "Shradha Pathak",
+    "Email": "Pathak@technova.com",
+    "Designation": "Senior tester",
+    "Department": "IT",
+    "CostRate": 6300,
+    "IsActive": true,
+    "EmploymentType": "Contract",
+    "Skills": []
   }
 ]

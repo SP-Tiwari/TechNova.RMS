@@ -70,6 +70,12 @@ public sealed class Employee
 
 	public void AddSkill(string skillName, int proficiencyLevel)
 	{
+		/// <summary>
+		/// Adds a new skill to the employee with a proficiency level (1-5).
+		/// Throws if the skill already exists or the proficiency is out of range.
+		/// </summary>
+		/// <param name="skillName">Skill name (required).</param>
+		/// <param name="proficiencyLevel">Proficiency level (1-5).</param>
 		var newSkill = new EmployeeSkill(skillName, proficiencyLevel);
 
 		bool alreadyExists = _skills.Any(
@@ -90,6 +96,10 @@ public sealed class Employee
 
 	public void RemoveSkill(string skillName)
 	{
+		/// <summary>
+		/// Removes an existing skill from the employee. Throws if the skill is not present.
+		/// </summary>
+		/// <param name="skillName">Name of the skill to remove (required).</param>
 		if (string.IsNullOrWhiteSpace(skillName))
 		{
 			throw new ArgumentException(

@@ -3,6 +3,9 @@ namespace TechNova.RMS.Infrastructure.Persistence;
 
 public sealed class JsonRmsRepository : IRmsRepository
 {
+	/// <summary>
+	/// JSON-backed implementation of <see cref="IRmsRepository"/> that reads and writes DTOs from a local Data folder.
+	/// </summary>
 	private readonly string _dataDirectory;
 
 	private readonly JsonSerializerOptions _options = new()
@@ -20,6 +23,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 
 	public List<Employee> GetEmployees()
 	{
+		/// <summary>
+		/// Read employees from the employees.json file and map to domain objects.
+		/// </summary>
 		var data = Read<EmployeeData>("employees.json");
 		var employees = new List<Employee>();
 
@@ -48,6 +54,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 
 	public List<Project> GetProjects()
 	{
+		/// <summary>
+		/// Read projects from the projects.json file and map to domain objects.
+		/// </summary>
 		var data = Read<ProjectData>("projects.json");
 		var projects = new List<Project>();
 
@@ -76,6 +85,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 
 	public List<Allocation> GetAllocations()
 	{
+		/// <summary>
+		/// Read allocations from the allocations.json file and map to domain objects.
+		/// </summary>
 		return Read<AllocationData>("allocations.json")
 			.Select(item => new Allocation(
 				item.Id,
@@ -89,6 +101,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 
 	public void SaveEmployees(IEnumerable<Employee> employees)
 	{
+		/// <summary>
+		/// Serialize and write the employee list to employees.json.
+		/// </summary>
 		var data = employees.Select(employee => new EmployeeData
 		{
 			Id = employee.Id,
@@ -111,6 +126,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 
 	public void SaveProjects(IEnumerable<Project> projects)
 	{
+		/// <summary>
+		/// Serialize and write the project list to projects.json.
+		/// </summary>
 		var data = projects.Select(project => new ProjectData
 		{
 			Id = project.Id,
@@ -134,6 +152,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 
 	public void SaveAllocations(IEnumerable<Allocation> allocations)
 	{
+		/// <summary>
+		/// Serialize and write the allocation list to allocations.json.
+		/// </summary>
 		var data = allocations.Select(allocation => new AllocationData
 		{
 			Id = allocation.Id,

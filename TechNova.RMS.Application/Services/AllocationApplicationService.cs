@@ -4,6 +4,11 @@ public sealed class AllocationApplicationService(
 	IRmsRepository repository,
 	AllocationService allocationService)
 {
+	/// <summary>
+	/// Applies a new allocation by validating domain rules and persisting the allocation.
+	/// Writes a console notification on success.
+	/// </summary>
+	/// <param name="newAllocation">The allocation to apply.</param>
 	public void Allocate(Allocation newAllocation)
 	{
 		var employees = repository.GetEmployees();
@@ -50,6 +55,11 @@ public sealed class AllocationApplicationService(
 
 	public void Release(string allocationId)
 	{
+		/// <summary>
+		/// Releases (removes) an allocation by identifier and persists the change.
+		/// Writes a console notification on success.
+		/// </summary>
+		/// <param name="allocationId">Identifier of the allocation to release.</param>
 		var allocations = repository.GetAllocations();
 
 		var allocation = allocations.FirstOrDefault(item =>

@@ -75,6 +75,10 @@ public sealed class Project
 
 	public void ChangeStatus(ProjectStatus status)
 	{
+		/// <summary>
+		/// Change the project's status to a new <see cref="ProjectStatus"/> value.
+		/// </summary>
+		/// <param name="status">New status value.</param>
 		Status = status;
 	}
 
@@ -82,6 +86,12 @@ public sealed class Project
 		string skillName,
 		int minimumProficiencyLevel)
 	{
+		/// <summary>
+		/// Adds a required skill with a minimum proficiency level to the project.
+		/// Throws when the skill already exists or the level is out of range.
+		/// </summary>
+		/// <param name="skillName">Skill name (required).</param>
+		/// <param name="minimumProficiencyLevel">Minimum proficiency required (1-5).</param>
 		var newSkill = new ProjectRequiredSkill(
 			skillName,
 			minimumProficiencyLevel);

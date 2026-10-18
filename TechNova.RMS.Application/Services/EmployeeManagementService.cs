@@ -2,6 +2,9 @@
 
 public sealed class EmployeeManagementService(IRmsRepository repository)
 {
+	/// <summary>
+	/// Adds a new employee to the repository after checking for duplicate IDs.
+	/// </summary>
 	public void AddEmployee(Employee employee)
 	{
 		var employees = repository.GetEmployees();
@@ -18,6 +21,17 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 		repository.SaveEmployees(employees);
 	}
 
+	/// <summary>
+	/// Updates an existing employee's details and persists changes.
+	/// Throws <see cref="InvalidOperationException"/> if the employee is not found.
+	/// </summary>
+	/// <param name="employeeId">Identifier of the employee to update.</param>
+	/// <param name="fullName">New full name.</param>
+	/// <param name="email">New email.</param>
+	/// <param name="designation">New designation.</param>
+	/// <param name="department">New department.</param>
+	/// <param name="costRate">New cost rate.</param>
+	/// <param name="employmentType">New employment type.</param>
 	public void UpdateEmployee(
 		string employeeId,
 		string fullName,
@@ -52,6 +66,10 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 
 	public void DeactivateEmployee(string employeeId)
 	{
+		/// <summary>
+		/// Deactivates the specified employee and persists the change.
+		/// Throws <see cref="InvalidOperationException"/> if the employee does not exist.
+		/// </summary>
 		var employees = repository.GetEmployees();
 
 		var employee = employees.FirstOrDefault(item =>

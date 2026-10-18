@@ -2,6 +2,9 @@
 
 public class EmployeeService(IRmsRepository repository)
 {
+	/// <summary>
+	/// Returns formatted employee summary lines for display in the UI.
+	/// </summary>
 	public List<string> GetEmployeeSummaries()
 	{
 		return repository.GetEmployees()

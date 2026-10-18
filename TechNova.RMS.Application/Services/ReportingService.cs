@@ -2,6 +2,13 @@
 
 public sealed class ReportingService
 {
+	/// <summary>
+	/// Produces a bench report listing active employees whose allocated percentage on a specific date is below the threshold.
+	/// </summary>
+	/// <param name="employees">All employees to consider.</param>
+	/// <param name="allocations">All allocations to calculate percentages from.</param>
+	/// <param name="reportDate">The date for which allocated percentage is calculated.</param>
+	/// <param name="thresholdPercentage">Employees with allocated percentage below this value are returned.</param>
 	public IReadOnlyList<BenchReportRow> GetBenchReport(
 		IEnumerable<Employee> employees,
 		IEnumerable<Allocation> allocations,
@@ -48,6 +55,9 @@ public sealed class ReportingService
 	}
 
 
+	/// <summary>
+	/// Returns staffing summary for each project including assigned employee count and total allocation percentage.
+	/// </summary>
 	public IReadOnlyList<ProjectStaffingRow> GetProjectStaffingSummary(
 		IEnumerable<TechNova.RMS.Domain.Projects.Project> projects,
 		IEnumerable<TechNova.RMS.Domain.Allocations.Allocation> allocations)
@@ -87,7 +97,10 @@ public sealed class ReportingService
 
 	}
 
-public IReadOnlyList<DepartmentUtilisationRow> GetDepartmentUtilisation(
+	/// <summary>
+	/// Computes department-level utilisation for the given report date.
+	/// </summary>
+	public IReadOnlyList<DepartmentUtilisationRow> GetDepartmentUtilisation(
 	IEnumerable<Employee> employees,
 	IEnumerable<Allocation> allocations,
 	DateOnly reportDate)

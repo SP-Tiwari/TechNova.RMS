@@ -2,6 +2,10 @@
 
 public sealed class EmployeeMatchingService
 {
+	/// <summary>
+	/// Finds active employees who meet the project's required skills and are available
+	/// (no day within the project range when their allocation reaches 100%).
+	/// </summary>
 	public IReadOnlyList<Employee> FindMatchingEmployees(
 		Project project,
 		IEnumerable<Employee> employees,
