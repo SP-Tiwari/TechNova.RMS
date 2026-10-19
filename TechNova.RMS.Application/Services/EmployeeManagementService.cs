@@ -5,9 +5,9 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 	/// <summary>
 	/// Adds a new employee to the repository after checking for duplicate IDs.
 	/// </summary>
-	public void AddEmployee(Employee employee)
+	public async Task AddEmployeeAsync(Employee employee, CancellationToken cancellationToken = default)
 	{
-		var employees = repository.GetEmployees();
+		var employees = await repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
 
 		if (employees.Any(item =>
 			string.Equals(item.Id, employee.Id,
@@ -18,7 +18,7 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 		}
 
 		employees.Add(employee);
-		repository.SaveEmployees(employees);
+		await repository.SaveEmployeesAsync(employees, cancellationToken).ConfigureAwait(false);
 	}
 
 	/// <summary>
@@ -32,7 +32,7 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 	/// <param name="department">New department.</param>
 	/// <param name="costRate">New cost rate.</param>
 	/// <param name="employmentType">New employment type.</param>
-	public void UpdateEmployee(
+	public async Task UpdateEmployeeAsync(
 		string employeeId,
 		string fullName,
 		string email,
@@ -41,7 +41,7 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 		decimal costRate,
 		EmploymentType employmentType)
 	{
-		var employees = repository.GetEmployees();
+		var employees = await repository.GetEmployeesAsync().ConfigureAwait(false);
 
 		var employee = employees.FirstOrDefault(item =>
 			string.Equals(item.Id, employeeId,
@@ -61,16 +61,16 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 			costRate,
 			employmentType);
 
-		repository.SaveEmployees(employees);
+		await repository.SaveEmployeesAsync(employees).ConfigureAwait(false);
 	}
 
-	public void DeactivateEmployee(string employeeId)
+	public async Task DeactivateEmployeeAsync(string employeeId, CancellationToken cancellationToken = default)
 	{
 		/// <summary>
 		/// Deactivates the specified employee and persists the change.
 		/// Throws <see cref="InvalidOperationException"/> if the employee does not exist.
 		/// </summary>
-		var employees = repository.GetEmployees();
+		var employees = await repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
 
 		var employee = employees.FirstOrDefault(item =>
 			string.Equals(item.Id, employeeId,
@@ -83,6 +83,6 @@ public sealed class EmployeeManagementService(IRmsRepository repository)
 		}
 
 		employee.Deactivate();
-		repository.SaveEmployees(employees);
+		await repository.SaveEmployeesAsync(employees, cancellationToken).ConfigureAwait(false);
 	}
 }

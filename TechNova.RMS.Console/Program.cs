@@ -15,4 +15,4 @@ services.AddSingleton<ConsoleMenu>();
 using var serviceProvider = services.BuildServiceProvider();
 
 var menu = serviceProvider.GetRequiredService<ConsoleMenu>();
-menu.Run();
+await menu.RunAsync();

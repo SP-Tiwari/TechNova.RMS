@@ -29,7 +29,7 @@ public class ConsoleMenu
 	}
 
 	bool exit = false;
-	public void Run()
+	public async Task RunAsync(CancellationToken cancellationToken = default)
 	{
 		/// <summary>
 		/// Main interactive menu loop for the console application. Presents options and routes user commands
@@ -63,47 +63,54 @@ public class ConsoleMenu
 					global::System.Console.WriteLine();
 					global::System.Console.WriteLine("=== Employee List ===");
 
-					foreach (var employee in _employeeService.GetEmployeeSummaries())
-					{
-						global::System.Console.WriteLine(employee);
-					}
+				var summaries = await _employeeService.GetEmployeeSummariesAsync(cancellationToken).ConfigureAwait(false);
+				foreach (var employee in summaries)
+				{
+					global::System.Console.WriteLine(employee);
+				}
 					break;
 
 				case "2":
 					global::System.Console.WriteLine();
 					global::System.Console.WriteLine("=== Project List ===");
 
-					foreach (var project in _repository.GetProjects())
-					{
-						global::System.Console.WriteLine($"{project.Id} | {project.Name} | {project.Status}");
-					}
+
+				var projects = await _repository.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
+				foreach (var project in projects)
+				{
+					global::System.Console.WriteLine($"{project.Id} | {project.Name} | {project.Status}");
+				}
 					break;
 
 				case "3":
 					global::System.Console.WriteLine();
 					global::System.Console.WriteLine("=== Allocation List ===");
 
-					foreach (var allocation in _repository.GetAllocations())
-					{
-						global::System.Console.WriteLine(
-							$"{allocation.EmployeeId} | {allocation.ProjectId}");
-					}
+
+				var allocations = await _repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
+				foreach (var allocation in allocations)
+				{
+					global::System.Console.WriteLine(
+						$"{allocation.EmployeeId} | {allocation.ProjectId}");
+				}
 					break;
 
 				case "4":
 					global::System.Console.WriteLine();
 					global::System.Console.WriteLine("=== Find Matching Employees ===");
 
-					foreach (var project in _repository.GetProjects())
-					{
-						global::System.Console.WriteLine($"{project.Id} | {project.Name}");
-					}
+
+				var projectsList = await _repository.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
+				foreach (var project in projectsList)
+				{
+					global::System.Console.WriteLine($"{project.Id} | {project.Name}");
+				}
 
 					Console.Write("Enter project ID: ");
 					var projectId = Console.ReadLine();
 
-					var selectedProject = _repository.GetProjects().FirstOrDefault(
-					p => string.Equals(p.Id, projectId, StringComparison.OrdinalIgnoreCase));
+				var selectedProject = projectsList.FirstOrDefault(
+				p => string.Equals(p.Id, projectId, StringComparison.OrdinalIgnoreCase));
 
 					if (selectedProject is null)
 					{
@@ -111,8 +118,10 @@ public class ConsoleMenu
 						break;
 					}
 
-					var matchingEmployees = _matchingService.FindMatchingEmployees(
-			  selectedProject, _repository.GetEmployees(), _repository.GetAllocations());
+				var employees = await _repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
+				var allocationsList = await _repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
+				var matchingEmployees = _matchingService.FindMatchingEmployees(
+		  selectedProject, employees, allocationsList);
 
 					Console.WriteLine();
 					Console.WriteLine($"Matching employees for: {selectedProject.Name}");
@@ -138,7 +147,9 @@ public class ConsoleMenu
 					Console.WriteLine();
 					Console.WriteLine("=== Project Staffing Summary ===");
 
-					var staffingReport = _reportingService.GetProjectStaffingSummary(_repository.GetProjects(), _repository.GetAllocations());
+				var projectsForReport = await _repository.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
+				var allocationsForReport = await _repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
+				var staffingReport = _reportingService.GetProjectStaffingSummary(projectsForReport, allocationsForReport);
 
 					foreach (var row in staffingReport)
 					{
@@ -179,7 +190,9 @@ public class ConsoleMenu
 						break;
 					}
 
-					var benchReport = _reportingService.GetBenchReport(_repository.GetEmployees(), _repository.GetAllocations(), reportDate, threshold);
+				var employeesForBench = await _repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
+				var allocationsForBench = await _repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
+				var benchReport = _reportingService.GetBenchReport(employeesForBench, allocationsForBench, reportDate, threshold);
 
 					Console.WriteLine();
 					Console.WriteLine($"Bench Report for {reportDate}");
@@ -219,8 +232,10 @@ public class ConsoleMenu
 						break;
 					}
 
-					var utilisationReport = _reportingService.GetDepartmentUtilisation(_repository.GetEmployees(),
-						_repository.GetAllocations(),
+					var employeesForUtil = await _repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
+					var allocationsForUtil = await _repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
+					var utilisationReport = _reportingService.GetDepartmentUtilisation(employeesForUtil,
+						allocationsForUtil,
 						utilisationDate);
 
 					Console.WriteLine();
@@ -292,9 +307,9 @@ public class ConsoleMenu
 							endDate,
 							percentage);
 
-						_allocationApplicationService.Allocate(allocation);
+					await _allocationApplicationService.AllocateAsync(allocation, cancellationToken).ConfigureAwait(false);
 
-						Console.WriteLine("Allocation saved successfully.");
+					Console.WriteLine("Allocation saved successfully.");
 					}
 					catch (InvalidOperationException ex)
 					{
@@ -357,8 +372,8 @@ public class ConsoleMenu
 							newId, fullName, email, designation, department,
 							costRate, (EmploymentType)typeNumber);
 
-						_employeeManagementService.AddEmployee(newEmployee);
-						Console.WriteLine("Employee added successfully.");
+					await _employeeManagementService.AddEmployeeAsync(newEmployee, cancellationToken).ConfigureAwait(false);
+					Console.WriteLine("Employee added successfully.");
 					}
 					catch (ArgumentException ex)
 					{
@@ -411,7 +426,7 @@ public class ConsoleMenu
 							break;
 						}
 
-						_employeeManagementService.UpdateEmployee(
+				await _employeeManagementService.UpdateEmployeeAsync(
 							updateId, updateName, updateEmail,
 							updateDesignation, updateDepartment, updateCost,
 							(EmploymentType)updateTypeNumber);
@@ -440,7 +455,7 @@ public class ConsoleMenu
 							break;
 						}
 
-						_employeeManagementService.DeactivateEmployee(deactivateId);
+				await _employeeManagementService.DeactivateEmployeeAsync(deactivateId, cancellationToken).ConfigureAwait(false);
 						Console.WriteLine("Employee deactivated successfully.");
 					}
 					catch (InvalidOperationException ex)
@@ -506,7 +521,7 @@ public class ConsoleMenu
 							endDate,
 							(ProjectStatus)statusNumber);
 
-						_projectManagementService.AddProject(newProject);
+				await _projectManagementService.AddProjectAsync(newProject, cancellationToken).ConfigureAwait(false);
 
 						Console.WriteLine("Project created successfully.");
 					}
@@ -526,25 +541,27 @@ public class ConsoleMenu
 					{
 						Console.WriteLine("=== Current Allocations ===");
 
-						foreach (var allocation in _repository.GetAllocations())
-						{
-							Console.WriteLine(
-								$"{allocation.Id} | Employee: {allocation.EmployeeId} | " +
-								$"Project: {allocation.ProjectId} | " +
-								$"{allocation.AllocationPercentage}%");
-						}
 
-						Console.Write("Enter Allocation ID to release: ");
-						var allocationId = Console.ReadLine()?.Trim();
+				var currentAllocations = await _repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
+				foreach (var allocation in currentAllocations)
+				{
+					Console.WriteLine(
+						$"{allocation.Id} | Employee: {allocation.EmployeeId} | " +
+						$"Project: {allocation.ProjectId} | " +
+						$"{allocation.AllocationPercentage}%");
+				}
 
-						if (string.IsNullOrWhiteSpace(allocationId))
-						{
-							Console.WriteLine("Allocation ID is required.");
-							break;
-						}
+				Console.Write("Enter Allocation ID to release: ");
+				var allocationId = Console.ReadLine()?.Trim();
 
-						_allocationApplicationService.Release(allocationId);
-						Console.WriteLine("Allocation released successfully.");
+				if (string.IsNullOrWhiteSpace(allocationId))
+				{
+					Console.WriteLine("Allocation ID is required.");
+					break;
+				}
+
+				await _allocationApplicationService.ReleaseAsync(allocationId, cancellationToken).ConfigureAwait(false);
+				Console.WriteLine("Allocation released successfully.");
 					}
 					catch (InvalidOperationException ex)
 					{

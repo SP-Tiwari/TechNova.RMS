@@ -3,44 +3,44 @@ namespace TechNova.RMS.Tests;
 public class EmployeeManagementServiceTests
 {
 	[Fact]
-	public void AddEmployee_SavesEmployee()
+	public async Task AddEmployee_SavesEmployee()
 	{
 		var repo = new InMemoryRmsRepository();
 		var svc = new EmployeeManagementService(repo);
 
 		var emp = new Employee("T1", "Test One", "t1@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
 
-		svc.AddEmployee(emp);
+		await svc.AddEmployeeAsync(emp);
 
-		var saved = repo.GetEmployees();
+		var saved = await repo.GetEmployeesAsync();
 		Assert.Contains(saved, e => e.Id == emp.Id);
 	}
 
 	[Fact]
-	public void AddEmployee_Duplicate_ThrowsInvalidOperationException()
+	public async Task AddEmployee_Duplicate_ThrowsInvalidOperationException()
 	{
 		var repo = new InMemoryRmsRepository();
 		var existing = new Employee("T2", "Existing", "e@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
-		repo.SeedEmployees(new[] { existing });
+		await repo.SeedEmployeesAsync(new[] { existing });
 
 		var svc = new EmployeeManagementService(repo);
 		var dup = new Employee("T2", "Dup", "d@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
 
-		Assert.Throws<InvalidOperationException>(() => svc.AddEmployee(dup));
+		await Assert.ThrowsAsync<InvalidOperationException>(() => svc.AddEmployeeAsync(dup));
 	}
 
 	[Fact]
-	public void UpdateEmployee_ChangesDetails()
+	public async Task UpdateEmployee_ChangesDetails()
 	{
 		var repo = new InMemoryRmsRepository();
 		var emp = new Employee("T3", "Old", "old@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
-		repo.SeedEmployees(new[] { emp });
+		await repo.SeedEmployeesAsync(new[] { emp });
 
 		var svc = new EmployeeManagementService(repo);
 
-		svc.UpdateEmployee(emp.Id, "New Name", "new@x.com", "Senior Dev", "R&D", 2000m, EmploymentType.Contract);
+		await svc.UpdateEmployeeAsync(emp.Id, "New Name", "new@x.com", "Senior Dev", "R&D", 2000m, EmploymentType.Contract);
 
-		var updated = repo.GetEmployees().First(e => e.Id == emp.Id);
+		var updated = (await repo.GetEmployeesAsync()).First(e => e.Id == emp.Id);
 		Assert.Equal("New Name", updated.FullName);
 		Assert.Equal("new@x.com", updated.Email);
 		Assert.Equal("Senior Dev", updated.Designation);
@@ -50,27 +50,27 @@ public class EmployeeManagementServiceTests
 	}
 
 	[Fact]
-	public void UpdateEmployee_NotFound_ThrowsInvalidOperationException()
+	public async Task UpdateEmployee_NotFound_ThrowsInvalidOperationException()
 	{
 		var repo = new InMemoryRmsRepository();
 		var svc = new EmployeeManagementService(repo);
 
-		Assert.Throws<InvalidOperationException>(() =>
-			svc.UpdateEmployee("Missing", "Name", "a@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent));
+		await Assert.ThrowsAsync<InvalidOperationException>(() =>
+			svc.UpdateEmployeeAsync("Missing", "Name", "a@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent));
 	}
 
 	[Fact]
-	public void DeactivateEmployee_SetsIsActiveFalse()
+	public async Task DeactivateEmployee_SetsIsActiveFalse()
 	{
 		var repo = new InMemoryRmsRepository();
 		var emp = new Employee("T4", "ToDeactivate", "d@x.com", "Dev", "Eng", 1000m, EmploymentType.Permanent);
-		repo.SeedEmployees(new[] { emp });
+		await repo.SeedEmployeesAsync(new[] { emp });
 
 		var svc = new EmployeeManagementService(repo);
 
-		svc.DeactivateEmployee(emp.Id);
+		await svc.DeactivateEmployeeAsync(emp.Id);
 
-		var updated = repo.GetEmployees().First(e => e.Id == emp.Id);
+		var updated = (await repo.GetEmployeesAsync()).First(e => e.Id == emp.Id);
 		Assert.False(updated.IsActive);
 	}
 }

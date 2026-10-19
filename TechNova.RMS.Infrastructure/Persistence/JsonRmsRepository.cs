@@ -21,12 +21,11 @@ public sealed class JsonRmsRepository : IRmsRepository
 		Directory.CreateDirectory(_dataDirectory);
 	}
 
-	public List<Employee> GetEmployees()
+	private readonly System.Threading.SemaphoreSlim _semaphore = new(1, 1);
+
+	public async Task<List<Employee>> GetEmployeesAsync(CancellationToken cancellationToken = default)
 	{
-		/// <summary>
-		/// Read employees from the employees.json file and map to domain objects.
-		/// </summary>
-		var data = Read<EmployeeData>("employees.json");
+		var data = await ReadAsync<EmployeeData>("employees.json", cancellationToken).ConfigureAwait(false);
 		var employees = new List<Employee>();
 
 		foreach (var item in data)
@@ -52,12 +51,9 @@ public sealed class JsonRmsRepository : IRmsRepository
 		return employees;
 	}
 
-	public List<Project> GetProjects()
+	public async Task<List<Project>> GetProjectsAsync(CancellationToken cancellationToken = default)
 	{
-		/// <summary>
-		/// Read projects from the projects.json file and map to domain objects.
-		/// </summary>
-		var data = Read<ProjectData>("projects.json");
+		var data = await ReadAsync<ProjectData>("projects.json", cancellationToken).ConfigureAwait(false);
 		var projects = new List<Project>();
 
 		foreach (var item in data)
@@ -83,27 +79,20 @@ public sealed class JsonRmsRepository : IRmsRepository
 		return projects;
 	}
 
-	public List<Allocation> GetAllocations()
+	public async Task<List<Allocation>> GetAllocationsAsync(CancellationToken cancellationToken = default)
 	{
-		/// <summary>
-		/// Read allocations from the allocations.json file and map to domain objects.
-		/// </summary>
-		return Read<AllocationData>("allocations.json")
-			.Select(item => new Allocation(
-				item.Id,
-				item.EmployeeId,
-				item.ProjectId,
-				item.StartDate,
-				item.EndDate,
-				item.AllocationPercentage))
-			.ToList();
+		var data = await ReadAsync<AllocationData>("allocations.json", cancellationToken).ConfigureAwait(false);
+		return data.Select(item => new Allocation(
+			item.Id,
+			item.EmployeeId,
+			item.ProjectId,
+			item.StartDate,
+			item.EndDate,
+			item.AllocationPercentage)).ToList();
 	}
 
-	public void SaveEmployees(IEnumerable<Employee> employees)
+	public async Task SaveEmployeesAsync(IEnumerable<Employee> employees, CancellationToken cancellationToken = default)
 	{
-		/// <summary>
-		/// Serialize and write the employee list to employees.json.
-		/// </summary>
 		var data = employees.Select(employee => new EmployeeData
 		{
 			Id = employee.Id,
@@ -121,14 +110,11 @@ public sealed class JsonRmsRepository : IRmsRepository
 			}).ToList()
 		});
 
-		Write("employees.json", data);
+		await WriteAsync("employees.json", data, cancellationToken).ConfigureAwait(false);
 	}
 
-	public void SaveProjects(IEnumerable<Project> projects)
+	public async Task SaveProjectsAsync(IEnumerable<Project> projects, CancellationToken cancellationToken = default)
 	{
-		/// <summary>
-		/// Serialize and write the project list to projects.json.
-		/// </summary>
 		var data = projects.Select(project => new ProjectData
 		{
 			Id = project.Id,
@@ -147,14 +133,11 @@ public sealed class JsonRmsRepository : IRmsRepository
 				.ToList()
 		});
 
-		Write("projects.json", data);
+		await WriteAsync("projects.json", data, cancellationToken).ConfigureAwait(false);
 	}
 
-	public void SaveAllocations(IEnumerable<Allocation> allocations)
+	public async Task SaveAllocationsAsync(IEnumerable<Allocation> allocations, CancellationToken cancellationToken = default)
 	{
-		/// <summary>
-		/// Serialize and write the allocation list to allocations.json.
-		/// </summary>
 		var data = allocations.Select(allocation => new AllocationData
 		{
 			Id = allocation.Id,
@@ -165,28 +148,44 @@ public sealed class JsonRmsRepository : IRmsRepository
 			AllocationPercentage = allocation.AllocationPercentage
 		});
 
-		Write("allocations.json", data);
+		await WriteAsync("allocations.json", data, cancellationToken).ConfigureAwait(false);
 	}
 
-	private List<T> Read<T>(string fileName)
+	private async Task<List<T>> ReadAsync<T>(string fileName, CancellationToken cancellationToken)
 	{
 		var path = Path.Combine(_dataDirectory, fileName);
 
-		if (!File.Exists(path))
-			return [];
+		await _semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+		try
+		{
+			if (!File.Exists(path))
+				return new List<T>();
 
-		var json = File.ReadAllText(path);
+			var json = await File.ReadAllTextAsync(path, cancellationToken).ConfigureAwait(false);
 
-		return JsonSerializer.Deserialize<List<T>>(json, _options)
-			?? [];
+			return JsonSerializer.Deserialize<List<T>>(json, _options)
+				?? new List<T>();
+		}
+		finally
+		{
+			_semaphore.Release();
+		}
 	}
 
-	private void Write<T>(string fileName, IEnumerable<T> data)
+	private async Task WriteAsync<T>(string fileName, IEnumerable<T> data, CancellationToken cancellationToken)
 	{
 		var path = Path.Combine(_dataDirectory, fileName);
 		var json = JsonSerializer.Serialize(data, _options);
 
-		File.WriteAllText(path, json);
+		await _semaphore.WaitAsync(cancellationToken).ConfigureAwait(false);
+		try
+		{
+			await File.WriteAllTextAsync(path, json, cancellationToken).ConfigureAwait(false);
+		}
+		finally
+		{
+			_semaphore.Release();
+		}
 	}
 
 	public sealed class EmployeeData

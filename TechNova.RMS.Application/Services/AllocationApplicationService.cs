@@ -9,11 +9,11 @@ public sealed class AllocationApplicationService(
 	/// Writes a console notification on success.
 	/// </summary>
 	/// <param name="newAllocation">The allocation to apply.</param>
-	public void Allocate(Allocation newAllocation)
+	public async Task AllocateAsync(Allocation newAllocation, CancellationToken cancellationToken = default)
 	{
-		var employees = repository.GetEmployees();
-		var projects = repository.GetProjects();
-		var allocations = repository.GetAllocations();
+		var employees = await repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
+		var projects = await repository.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
+		var allocations = await repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
 
 		var employee = employees.FirstOrDefault(item =>
 			string.Equals(
@@ -46,21 +46,21 @@ public sealed class AllocationApplicationService(
 			allocations);
 
 		allocations.Add(newAllocation);
-		repository.SaveAllocations(allocations);
+		await repository.SaveAllocationsAsync(allocations, cancellationToken).ConfigureAwait(false);
 
 		Console.WriteLine(
 			$"Notification: {employee.FullName} allocated to {project.Name}.");
 	}
 
 
-	public void Release(string allocationId)
+	public async Task ReleaseAsync(string allocationId, CancellationToken cancellationToken = default)
 	{
 		/// <summary>
 		/// Releases (removes) an allocation by identifier and persists the change.
 		/// Writes a console notification on success.
 		/// </summary>
 		/// <param name="allocationId">Identifier of the allocation to release.</param>
-		var allocations = repository.GetAllocations();
+		var allocations = await repository.GetAllocationsAsync(cancellationToken).ConfigureAwait(false);
 
 		var allocation = allocations.FirstOrDefault(item =>
 			string.Equals(
@@ -74,7 +74,7 @@ public sealed class AllocationApplicationService(
 				$"Allocation '{allocationId}' was not found.");
 		}
 
-		var employees = repository.GetEmployees();
+		var employees = await repository.GetEmployeesAsync(cancellationToken).ConfigureAwait(false);
 
 		var employee = employees.FirstOrDefault(item =>
 			string.Equals(
@@ -83,7 +83,7 @@ public sealed class AllocationApplicationService(
 				StringComparison.OrdinalIgnoreCase));
 
 		allocations.Remove(allocation);
-		repository.SaveAllocations(allocations);
+		await repository.SaveAllocationsAsync(allocations, cancellationToken).ConfigureAwait(false);
 
 		Console.WriteLine(
 			$"Notification: Allocation released for " +

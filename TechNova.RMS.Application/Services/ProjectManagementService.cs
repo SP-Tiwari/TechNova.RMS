@@ -6,9 +6,9 @@ public sealed class ProjectManagementService(IRmsRepository repository)
 	/// Adds a new project after checking for duplicate project IDs and persists it.
 	/// </summary>
 	/// <param name="project">Project to add.</param>
-	public void AddProject(Project project)
+	public async Task AddProjectAsync(Project project, CancellationToken cancellationToken = default)
 	{
-		var projects = repository.GetProjects();
+		var projects = await repository.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
 
 		if (projects.Any(item =>
 			string.Equals(item.Id, project.Id,
@@ -19,6 +19,6 @@ public sealed class ProjectManagementService(IRmsRepository repository)
 		}
 
 		projects.Add(project);
-		repository.SaveProjects(projects);
+		await repository.SaveProjectsAsync(projects, cancellationToken).ConfigureAwait(false);
 	}
 }
