@@ -14,7 +14,20 @@ This document describes the structure and key design decisions of the TechNova R
 
 This solution is intended for learning and demos rather than production deployment.
 
-## 2. Architecture
+## 2. Architecture Decision Records
+
+The design decisions are documented in the following formal ADRs:
+
+- [ADR-001: Layered project architecture](docs/ADR-001-architecture.md)
+- [ADR-002: Domain model choices](docs/ADR-002-domain-model.md)
+- [ADR-003: Validation and business rules](docs/ADR-003-validation.md)
+- [ADR-004: Persistence using JSON files](docs/ADR-004-persistence.md)
+- [ADR-005: Dependency injection and composition root](docs/ADR-005-dependency-injection.md)
+- [ADR-006: Employment type represented as a domain enum](docs/ADR-006-employment-types.md)
+
+The standalone [architecture diagram](docs/architecture.md) shows compile-time project references separately from runtime service and repository calls.
+
+## 3. Architecture
 
 The code is organized into four focused projects:
 
@@ -57,23 +70,43 @@ Domain <- Application <- Console
 
 Domain <- Infrastructure (implements Application's persistence abstraction)
 
+### Layered Architecture Diagram
+
+The following diagram shows the main projects and the direction of their compile-time dependencies. The application layer owns the persistence abstraction, while infrastructure supplies the JSON implementation.
+
+```mermaid
+flowchart TD
+    Console[TechNova.RMS.Console<br/>Program and ConsoleMenu]
+    Application[TechNova.RMS.Application<br/>Application services and IRmsRepository]
+    Domain[TechNova.RMS.Domain<br/>Entities, value objects, and business rules]
+    Infrastructure[TechNova.RMS.Infrastructure<br/>JsonRmsRepository and DTO mapping]
+    Data[(JSON data files)]
+
+    Console --> Application
+    Console --> Infrastructure
+    Application --> Domain
+    Infrastructure --> Application
+    Infrastructure --> Domain
+    Infrastructure --> Data
+```
+
 ## 4. Main Workflows
 
 High-level workflows implemented by the application services and driven by `ConsoleMenu`:
 
 - Employee management
-  - Add: `EmployeeManagementService.AddEmployee(Employee)` checks duplicates and calls `IRmsRepository.SaveEmployees`.
-  - Update: `EmployeeManagementService.UpdateEmployee(...)` updates domain state via `Employee.UpdateDetails` and saves.
-  - Deactivate: `EmployeeManagementService.DeactivateEmployee(string)` sets `Employee.IsActive = false` and saves.
-  - List: `EmployeeService.GetEmployeeSummaries()` reads employees and returns formatted lines for the UI.
+  - Add: `EmployeeManagementService.AddEmployeeAsync(Employee)` checks duplicates and calls `IRmsRepository.SaveEmployeesAsync`.
+  - Update: `EmployeeManagementService.UpdateEmployeeAsync(...)` updates domain state via `Employee.UpdateDetails` and saves.
+  - Deactivate: `EmployeeManagementService.DeactivateEmployeeAsync(string)` sets `Employee.IsActive = false` and saves.
+  - List: `EmployeeService.GetEmployeeSummariesAsync()` reads employees and returns formatted lines for the UI.
 
 - Project management
-  - Create: `ProjectManagementService.AddProject(Project)` verifies duplicate IDs and persists.
+  - Create: `ProjectManagementService.AddProjectAsync(Project)` verifies duplicate IDs and persists.
   - Update: `Project.UpdateDetails(...)` and `Project.ChangeStatus(...)` enforce project invariants.
 
 - Allocation and release
-  - Allocate: `AllocationApplicationService.Allocate(Allocation)` finds the employee and project, delegates to `AllocationService.ValidateAllocation`, appends the allocation, and calls `IRmsRepository.SaveAllocations`.
-  - Release: `AllocationApplicationService.Release(string allocationId)` removes the allocation and persists.
+  - Allocate: `AllocationApplicationService.AllocateAsync(Allocation)` finds the employee and project, delegates to `AllocationService.ValidateAllocation`, appends the allocation, and calls `IRmsRepository.SaveAllocationsAsync`.
+  - Release: `AllocationApplicationService.ReleaseAsync(string allocationId)` removes the allocation and persists.
   - Notification: allocation and release actions write a `Console.WriteLine` message (simulated notification).
 
 - Employee matching
@@ -112,7 +145,7 @@ Note: the runtime `Data` directory is calculated relative to the assembly base p
     - `services.AddSingleton<EmployeeManagementService>();`
     - `services.AddSingleton<ProjectManagementService>();`
     - `services.AddSingleton<ConsoleMenu>();`
-  - The provider is built and `ConsoleMenu` is resolved and run: `menu.Run()`.
+  - The provider is built and `ConsoleMenu` is resolved and run asynchronously: `await menu.RunAsync()`.
 
 - The application relies on constructor injection for `ConsoleMenu` and services. Application services depend on `IRmsRepository` or other services as constructor parameters (observed in source code).
 
@@ -230,4 +263,16 @@ Notes: The document avoids claiming any principle is perfectly implemented; wher
   - Reason: simple demonstration point using `Console.WriteLine` in `AllocationApplicationService`.
   - Limitation: not a real notification system; in production you would use an event bus or notification/messaging service.
 
----
+## Testing Structure
+
+The solution retains the original `TechNova.RMS.Tests` regression project and adds focused projects by layer:
+
+- `TechNova.RMS.Domain.Tests` contains domain unit tests for constructors, invariants, skills, allocations, and `AllocationService`.
+- `TechNova.RMS.Application.Tests` contains application-service unit tests using in-memory repository fakes, including matching, reporting, async workflows, cancellation, and notifications.
+- `TechNova.RMS.Infrastructure.Tests` contains integration-style JSON persistence tests using isolated temporary output files; it does not use the console seed files.
+
+The interactive Console UI is not given a separate fragile input/output test project. Its application services and domain behavior are tested independently, while `Program.cs` remains the composition root.
+
+Use `dotnet test TechNova.RMS.slnx -c Debug` for all tests and `dotnet test <test-project>.csproj -c Debug` for one project. The existing test projects include `coverlet.collector`; use `dotnet test TechNova.RMS.slnx -c Debug --collect:"XPlat Code Coverage" --results-directory TestResults` to generate coverage output.
+
+The final verification in this workspace reported 64 passed, 0 failed, and 0 skipped tests across all four test projects. The solution build with `-warnaserror` succeeded with zero warnings and errors. Coverage collection generated Cobertura reports with per-test-process line rates from 39.78% to 75.99% and branch rates from 29.71% to 79.48%; no merged solution-wide percentage is claimed.

@@ -22,7 +22,7 @@
 - Nullable reference types: `Nullable` enabled in project files.
 - Implicit usings are enabled.
 - Package: `Microsoft.Extensions.DependencyInjection` (console project references version `10.0.13`).
-- C# language version: not explicitly set in the project files (uses SDK default).
+- C# language version: not explicitly set in the project files (the .NET 10 SDK default is C# 14; the zero-warning build completed successfully).
 
 ## Solution Structure
 
@@ -30,8 +30,12 @@
 - `TechNova.RMS.Application` — application services and persistence abstraction (`IRmsRepository`).
 - `TechNova.RMS.Infrastructure` — concrete persistence (`JsonRmsRepository`) and DTO mapping.
 - `TechNova.RMS.Console` — console UI, `Program.cs` composition root, and sample JSON data in `Data/`.
+- `TechNova.RMS.Tests` — existing regression tests.
+- `TechNova.RMS.Domain.Tests` — domain unit tests for entities and business rules.
+- `TechNova.RMS.Application.Tests` — application-service unit tests using in-memory repository fakes.
+- `TechNova.RMS.Infrastructure.Tests` — isolated JSON persistence integration-style tests using real file I/O.
 
-For design details and diagrams see `DESIGN.md`.
+For design details and diagrams see `DESIGN.md` and [`docs/architecture.md`](docs/architecture.md).
 
 ## Prerequisites
 
@@ -118,17 +122,44 @@ That means the repository expects a `Data` folder relative to the running assemb
 This solution follows a layered architecture with separate Domain, Application, Infrastructure, and Console projects. See `DESIGN.md` for class diagrams, SOLID observations, and more design notes:
 
 - `./DESIGN.md`
+- [`docs/architecture.md`](docs/architecture.md)
+- ADR links in [`DESIGN.md`](DESIGN.md#2-architecture-decision-records)
 
-## Known Limitations (confirmed)
+## Testing
 
-- The console UI is single-user and interactive — not suitable for concurrent multi-user scenarios.
-- JSON file persistence is simple and human-readable but has limited concurrency and no transactional guarantees.
-- Notifications are simulated using `Console.WriteLine` in `AllocationApplicationService` rather than an event-driven or external notification mechanism.
+Run the complete suite:
 
----
+```powershell
+dotnet restore TechNova.RMS.slnx
+dotnet build TechNova.RMS.slnx -c Debug -warnaserror
+dotnet test TechNova.RMS.slnx -c Debug
+```
 
-Created/updated file:
+Run a specific test project:
 
-- `C:\DotNetTraining\Day01\TechNova.RMS\README.md`
+```powershell
+dotnet test TechNova.RMS.Domain.Tests/TechNova.RMS.Domain.Tests.csproj -c Debug
+dotnet test TechNova.RMS.Application.Tests/TechNova.RMS.Application.Tests.csproj -c Debug
+dotnet test TechNova.RMS.Infrastructure.Tests/TechNova.RMS.Infrastructure.Tests.csproj -c Debug
+dotnet test TechNova.RMS.Tests/TechNova.RMS.Tests.csproj -c Debug
+```
 
-If you want the README adjusted (different setup commands, more examples, or badges), tell me which parts to change.
+The test projects use the existing xUnit, Microsoft.NET.Test.Sdk, xUnit Visual Studio adapter, and `coverlet.collector` packages. Generate a Cobertura coverage report with:
+
+```powershell
+dotnet test TechNova.RMS.slnx -c Debug --collect:"XPlat Code Coverage" --results-directory TestResults
+```
+
+The existing baseline suite was independently verified with 29 passed, 0 failed, and 0 skipped tests. Dedicated-project and final solution results must be recorded from the commands actually run.
+
+The final verification completed successfully in this workspace:
+
+- `dotnet restore TechNova.RMS.slnx` — succeeded.
+- `dotnet build TechNova.RMS.slnx -c Debug -warnaserror -v minimal` — succeeded with zero warnings and errors.
+- `dotnet test TechNova.RMS.Domain.Tests/TechNova.RMS.Domain.Tests.csproj -c Debug` — 19 passed, 0 failed, 0 skipped.
+- `dotnet test TechNova.RMS.Application.Tests/TechNova.RMS.Application.Tests.csproj -c Debug` — 12 passed, 0 failed, 0 skipped.
+- `dotnet test TechNova.RMS.Infrastructure.Tests/TechNova.RMS.Infrastructure.Tests.csproj -c Debug` — 4 passed, 0 failed, 0 skipped.
+- `dotnet test TechNova.RMS.Tests/TechNova.RMS.Tests.csproj -c Debug` — 29 passed, 0 failed, 0 skipped.
+- `dotnet test TechNova.RMS.slnx -c Debug` — 64 passed, 0 failed, 0 skipped.
+
+Coverage collection also succeeded with four Cobertura reports. The generated per-test-process reports ranged from 39.78% to 75.99% line coverage and from 29.71% to 79.48% branch coverage; these are not a single merged solution-wide percentage because the solution command produces separate reports and includes referenced assemblies. The generated `TestResults` directory is intentionally not committed.

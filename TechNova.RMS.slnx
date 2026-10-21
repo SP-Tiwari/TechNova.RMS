@@ -1,7 +1,10 @@
 <Solution>
   <Project Path="TechNova.RMS.Application/TechNova.RMS.Application.csproj" />
+  <Project Path="TechNova.RMS.Application.Tests/TechNova.RMS.Application.Tests.csproj" />
   <Project Path="TechNova.RMS.Console/TechNova.RMS.Console.csproj" />
   <Project Path="TechNova.RMS.Domain/TechNova.RMS.Domain.csproj" />
+  <Project Path="TechNova.RMS.Domain.Tests/TechNova.RMS.Domain.Tests.csproj" />
   <Project Path="TechNova.RMS.Infrastructure/TechNova.RMS.Infrastructure.csproj" />
+  <Project Path="TechNova.RMS.Infrastructure.Tests/TechNova.RMS.Infrastructure.Tests.csproj" />
   <Project Path="TechNova.RMS.Tests/TechNova.RMS.Tests.csproj" />
 </Solution>

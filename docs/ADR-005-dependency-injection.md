@@ -22,7 +22,9 @@ Use `Microsoft.Extensions.DependencyInjection` with constructor injection and `P
 - `services.AddSingleton<ProjectManagementService>();`
 - `services.AddSingleton<ConsoleMenu>();`
 
-`Program.cs` builds the `ServiceProvider`, resolves `ConsoleMenu`, and calls `menu.Run()` to start the interactive UI. Services are injected via constructors (for example `ConsoleMenu` expects `EmployeeService`, `EmployeeMatchingService`, `IRmsRepository`, and other services in its constructor).
+`Program.cs` builds the `ServiceProvider`, resolves `ConsoleMenu`, and awaits `menu.RunAsync()` to start the interactive UI. Services are injected via constructors (for example `ConsoleMenu` expects `EmployeeService`, `EmployeeMatchingService`, `IRmsRepository`, and other services in its constructor).
+
+`docs/architecture.md` illustrates these compile-time references and runtime calls.
 
 ## Alternatives Considered
 
@@ -44,5 +46,9 @@ Use `Microsoft.Extensions.DependencyInjection` with constructor injection and `P
 - Trade-offs / Limitations
   - All services are registered as singletons for simplicity; this is acceptable for a single-process console app but might be inappropriate for stateful services or web scenarios.
   - The code uses concrete service types (no interfaces for every service) which is simple but may limit mocking or interception in some tests.
+
+- Justification of Singleton Lifetimes
+  - All registrations are singletons because the application is a single-process console program, the application services are stateless coordinators, and the repository owns one in-process `SemaphoreSlim` for file access. The lifetime choice avoids multiple repository instances within the process while preserving the existing behavior.
+  - This lifetime decision is intentionally scoped to the console application. A web or multi-request host would normally reassess repository and service lifetimes, likely using scoped services and a transactional persistence implementation.
 
 This ADR records the implemented DI approach and the reasons it was chosen for the lab.

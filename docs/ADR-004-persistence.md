@@ -15,6 +15,8 @@ Persist data as JSON files using `JsonRmsRepository`:
 - Use `System.Text.Json` for serialization with `JsonStringEnumConverter` and indented output.
 - Store files named `employees.json`, `projects.json`, and `allocations.json` in a `Data` folder packaged with the console project (the console project includes `Data\*.json` as content with `CopyToOutputDirectory` = `PreserveNewest`).
 - At runtime `JsonRmsRepository` resolves the data directory using `Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\Data"))` and reads/writes the JSON DTOs, mapping them to domain objects.
+- Reads and writes use `File.ReadAllTextAsync` and `File.WriteAllTextAsync`, and an in-process `SemaphoreSlim` serializes access to the repository's files.
+- `TechNova.RMS.Infrastructure.Tests` exercises round-trip mapping, missing files, empty arrays, and malformed JSON using an isolated output `Data` directory. These are integration-style tests because they use real file I/O.
 
 This is the implemented approach in the codebase.
 
@@ -36,7 +38,7 @@ This is the implemented approach in the codebase.
   - Straightforward mapping between DTOs and domain types.
 
 - Trade-offs / Limitations
-  - JSON files are not suitable for concurrent multi-user scenarios and have no transactional guarantees.
+  - JSON files are not suitable for concurrent multi-user scenarios and have no transactional guarantees; the semaphore only protects concurrent access within one repository process.
   - Performance and query capabilities are limited compared to a database.
   - Path resolution depends on how the application is launched; the code uses a relative path from the assembly base directory which works for the console project when run from the repository.
 

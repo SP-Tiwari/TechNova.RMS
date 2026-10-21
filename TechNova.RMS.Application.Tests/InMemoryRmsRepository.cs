@@ -1,0 +1,42 @@
+namespace TechNova.RMS.Application.Tests;
+
+internal sealed class InMemoryRmsRepository : IRmsRepository
+{
+	private readonly List<Employee> _employees = [];
+	private readonly List<Project> _projects = [];
+	private readonly List<Allocation> _allocations = [];
+
+	public Task<List<Employee>> GetEmployeesAsync(CancellationToken cancellationToken = default)
+		=> Task.FromResult(_employees.ToList());
+
+	public Task<List<Project>> GetProjectsAsync(CancellationToken cancellationToken = default)
+		=> Task.FromResult(_projects.ToList());
+
+	public Task<List<Allocation>> GetAllocationsAsync(CancellationToken cancellationToken = default)
+		=> Task.FromResult(_allocations.ToList());
+
+	public Task SaveEmployeesAsync(IEnumerable<Employee> employees, CancellationToken cancellationToken = default)
+	{
+		_employees.Clear();
+		_employees.AddRange(employees);
+		return Task.CompletedTask;
+	}
+
+	public Task SaveProjectsAsync(IEnumerable<Project> projects, CancellationToken cancellationToken = default)
+	{
+		_projects.Clear();
+		_projects.AddRange(projects);
+		return Task.CompletedTask;
+	}
+
+	public Task SaveAllocationsAsync(IEnumerable<Allocation> allocations, CancellationToken cancellationToken = default)
+	{
+		_allocations.Clear();
+		_allocations.AddRange(allocations);
+		return Task.CompletedTask;
+	}
+
+	public Task SeedEmployeesAsync(params Employee[] employees) => SaveEmployeesAsync(employees);
+	public Task SeedProjectsAsync(params Project[] projects) => SaveProjectsAsync(projects);
+	public Task SeedAllocationsAsync(params Allocation[] allocations) => SaveAllocationsAsync(allocations);
+}

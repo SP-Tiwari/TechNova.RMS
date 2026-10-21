@@ -1,0 +1,12 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using Xunit;
+global using TechNova.RMS.Application.Persistence;
+global using TechNova.RMS.Application.Services;
+global using TechNova.RMS.Domain.Allocations;
+global using TechNova.RMS.Domain.Employees;
+global using TechNova.RMS.Domain.Projects;
+global using TechNova.RMS.Domain.Services;
